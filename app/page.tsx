@@ -28,10 +28,10 @@ export default function Dashboard() {
       try {
         const response = await fetch('https://mauthn.mukham.in/all_logs', {
           method: 'GET',
-          credentials: 'include',
+          
           headers: {
-            'Cookie': 'Authorization=authorized',
-            'Content-Type': 'application/json',
+            'logsauth': 'authorized'
+            
           },
         });
         
