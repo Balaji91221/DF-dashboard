@@ -33,7 +33,7 @@ export default function Users() {
   }
 
   return (
-    <Card className="bg-gray-900 p-6">
+    <Card className="bg-gray-900 p-8  ">
       <CardHeader>
         <CardTitle className="text-white">User Search</CardTitle>
       </CardHeader>

@@ -6,22 +6,18 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Area, AreaChart, Pie, PieChart as RePieChart, XAxis, YAxis, ResponsiveContainer, Cell } from 'recharts'
 import { useLogs } from '@/components/useLogs'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { ComposableMap, Geographies, Geography } from "react-simple-maps"
-import { scaleSequential } from "d3-scale"
-import { interpolateBlues } from "d3-scale-chromatic"
 
-const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"
+
+import Map from '@/components/Map'
+
+
 
 const Dashboard = () => {
   const { logs, loginCount, uniqueUsers, authMethodsCount, authMethodsData } = useLogs()
 
-  const countryCounts = logs.reduce((acc: { [key: string]: number }, log) => {
-    acc[log.countryCode] = (acc[log.countryCode] || 0) + 1
-    return acc
-  }, {})
 
-  const colorScale = scaleSequential(interpolateBlues).domain([0, Math.max(...Object.values(countryCounts))])
-  
+
+ 
   const areaData = logs
     .reduce((acc: { date: string; value: number }[], log) => {
       const date = new Date(log.timestamp).toLocaleDateString()
@@ -73,45 +69,7 @@ const Dashboard = () => {
           </ResponsiveContainer>
         </ChartCard>
       </div>
-      <Card className="bg-gray-900 rounded-lg shadow-lg p-4">
-                <CardHeader className="mb-4">
-                  <CardTitle className="text-white text-xl font-semibold">Login Locations</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="h-[600px] w-full overflow-hidden rounded-md shadow-md bg-gray-800">
-                <ComposableMap
-                      projection="geoMercator"
-                      projectionConfig={{
-                        scale: 100,
-                        center: [0, 20],
-                      }}
-                    >
-                      <Geographies geography={geoUrl}>
-                        {({ geographies }) =>
-                          geographies.map((geo) => {
-                            const countryCode = geo.properties.ISO_A2;
-                            const fillColor = colorScale(countryCounts[countryCode] || 0);
-                            return (
-                              <Geography
-                                key={geo.rsmKey}
-                                geography={geo}
-                                fill={fillColor}
-                                stroke="#2d3748"
-                                style={{
-                                  default: { outline: "none" },
-                                  hover: { fill: "#63b3ed", outline: "none" },
-                                  pressed: { fill: "#2c5282", outline: "none" },
-                                }}
-                              />
-                            );
-                          })
-                        }
-                      </Geographies>
-                    </ComposableMap>
-                  </div>
-                </CardContent>
-              </Card>
-
+      <Map/>
       <Card className="bg-gray-900/50">
         <CardHeader>
           <CardTitle className="text-white">Recent Logins</CardTitle>
