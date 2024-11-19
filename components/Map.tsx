@@ -421,23 +421,59 @@ export default function Map() {
                 <circle r={6} fill="#FF6B6B" stroke="#FFF" strokeWidth={2} />
               </Marker>
 
+              {/* Fixed marker for US */}
+              <Marker coordinates={US_COORDINATES}>
+                <circle r={6} fill="#FF6B6B" stroke="#FFF" strokeWidth={2} />
+              </Marker>
+
+              <Marker coordinates={NL_COORDINATES}>
+        <circle r={6} fill="#FF6B6B" stroke="#FFF" strokeWidth={2} />
+      </Marker>
+
+      {/* Marker for Sweden */}
+      <Marker coordinates={SE_COORDINATES}>
+        <circle r={6} fill="#FF6B6B" stroke="#FFF" strokeWidth={2} />
+      </Marker>
+
               {/* Dynamic markers */}
-              {markers.slice(0, currentMarkerIndex + 1).map((marker) => (
-                <motion.g key={marker.key} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ duration: 0.5 }}>
-                  <Marker coordinates={marker.coordinates}>
-                    <circle r={4} fill={marker.color} stroke="#FFF" strokeWidth={2} />
-                  </Marker>
-                  {(marker.log.countryCode === 'IN' || marker.log.countryCode === 'US' || marker.log.countryCode ==='NL' || marker.log.countryCode ==='SE') && (
-                    <Line
-                      from={marker.log.countryCode === 'IN' ? INDIA_COORDINATES : US_COORDINATES || NL_COORDINATES || SE_COORDINATES}
-                      to={marker.coordinates}
-                      stroke="#FF9F1C"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                    />
-                  )}
-                </motion.g>
-              ))}
+              {markers.slice(0, currentMarkerIndex + 1).map((marker) => {
+        // Determine the correct coordinates for the line's starting point
+        let startCoordinates = null;
+        if (marker.log.countryCode === 'IN') {
+          startCoordinates = INDIA_COORDINATES;
+        } else if (marker.log.countryCode === 'US') {
+          startCoordinates = US_COORDINATES;
+        } else if (marker.log.countryCode === 'NL') {
+          startCoordinates = NL_COORDINATES;
+        } else if (marker.log.countryCode === 'SE') {
+          startCoordinates = SE_COORDINATES;
+        }
+
+        return (
+          <motion.g
+            key={marker.key}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            {/* Marker */}
+            <Marker coordinates={marker.coordinates}>
+              <circle r={4} fill={marker.color} stroke="#FFF" strokeWidth={2} />
+            </Marker>
+
+            {/* Conditional Line */}
+            {startCoordinates && (
+              <Line
+                from={startCoordinates}
+                to={marker.coordinates}
+                stroke="#FF9F1C"
+                strokeWidth={2}
+                strokeLinecap="round"
+              />
+            )}
+          </motion.g>
+        );
+      })}
             </ZoomableGroup>
           </ComposableMap>
         </div>
