@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dashboard 📊
 
-## Getting Started
+A modern, data-driven dashboard built with **Nextjs**, **Recharts**, and **Tailwind CSS**, providing insightful visualizations and real-time data updates.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🛠 Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Dynamic Charts**: Interactive area and pie charts powered by **Recharts**.
+- **Responsive Design**: Seamlessly adapts to various devices and screen sizes.
+- **Data Cards**: Compact, informative cards highlighting key metrics like login counts, unique users, and more.
+- **Real-Time Updates**: Fetches live data using custom hooks for logs.
+- **Map Integration**: Displays geographic distribution of users (using a custom Map component).
+- **Recent Logins Table**: Displays recent login activity in a clean, tabular format.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## DEMO
+- https://dashboard-three-delta-27.vercel.app/
 
-## Learn More
+## 🏗️ Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+- **Frontend**: React, Tailwind CSS, Recharts
+- **Icons**: Lucide Icons
+- **State Management**: Custom React Hooks
+- **Additional Tools**: TypeScript, ResponsiveContainer for charts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🚀 Setup and Installation
 
-## Deploy on Vercel
+### Prerequisites
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Ensure you have the following installed:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Node.js (>= 16.x)
+- npm or yarn
+
+### Steps
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/your-username/dashboard.git
+   cd dashboard
+   ```
