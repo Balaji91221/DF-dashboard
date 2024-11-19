@@ -80,7 +80,7 @@ export default function Analytics() {
         {/* Authentication Methods Pie Chart */}
         <Card className="bg-gray-900/60 p-6 shadow-lg">
           <CardHeader>
-            <CardTitle className="text-white text-xl">Auth Methods Distribution</CardTitle>
+            <CardTitle className="text-white text-xl">Services</CardTitle>
           </CardHeader>
           <CardContent>
           <ResponsiveContainer width="100%" height={300}>

@@ -18,29 +18,29 @@ export default function Help() {
   // Frequently Asked Questions data
   const faqs = [
     {
-      question: 'How do I reset my password?',
+      question: 'How do I create a new user?',
       answer:
-        "To reset your password, click on the 'Forgot Password' link on the login page. You'll receive an email with instructions to create a new password.",
+        "Request an administrator to create a new user from the admin dashboard. The new user will receive instructions to setup their account by an email.",
     },
     {
-      question: 'What should I do if I suspect unauthorized access to my account?',
+      question: 'What should I do if I lose access to my security key or device?',
       answer:
-        'If you suspect unauthorized access, immediately change your password and contact our support team. We will review your account activity and help secure your account.',
+        'In case of loss of devices, please contact the admin. The admin will set up a link to add new devices.',
     },
     {
-      question: 'How can I enable two-factor authentication?',
+      question: 'How can I use MAuthN in my products or services?',
       answer:
-        'You can enable two-factor authentication in your account settings. We support various methods including SMS, authenticator apps, and security keys.',
+        'MAuthN has a wide range of available SDKs and APIs, tailored for your product or service. Contact the administrator to receive your APIs.',
     },
     {
       question: 'Are my login attempts logged?',
       answer:
-        'Yes, we log all login attempts for security purposes. You can view your login history in your account settings.',
+        'Yes, we log all successful login attempts for security purposes. You can view your login history in your account settings.',
     },
     {
-      question: 'How long are my login sessions valid?',
+      question: 'Where can I use MAuthN?',
       answer:
-        "Login sessions are typically valid for 24 hours. After this period, you'll need to log in again for security reasons.",
+        "MAuthN is usable in internet connected device. If your product or service is critical or not internet connected, contact the developers to set up an air-gapped version of MAuthN in your premises.",
     },
   ];
 
