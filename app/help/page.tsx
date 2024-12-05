@@ -1,21 +1,18 @@
-'use client';
-
-import React from 'react';
+import React from 'react'
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/ui/card'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion';
+} from '@/components/ui/accordion'
 
-export default function Help() {
-  // Frequently Asked Questions data
+export default function HelpPage() {
   const faqs = [
     {
       question: 'How do I create a new user?',
@@ -42,28 +39,24 @@ export default function Help() {
       answer:
         "MAuthN is usable in internet connected device. If your product or service is critical or not internet connected, contact the developers to set up an air-gapped version of MAuthN in your premises.",
     },
-  ];
+  ]
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8">
-      {/* Page Header */}
-      <h1 className="text-4xl font-bold text-white">Help Center</h1>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold text-gray-800 mb-6">Help Center</h1>
 
-      {/* FAQ Accordion */}
-      <Card className="bg-gray-900/50 p-6 shadow-lg">
+      <Card>
         <CardHeader>
-          <CardTitle className="text-white text-2xl">Frequently Asked Questions</CardTitle>
+          <CardTitle>Frequently Asked Questions</CardTitle>
         </CardHeader>
         <CardContent>
-          <Accordion type="single" collapsible className="w-full space-y-4">
+          <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
-                {/* FAQ Question */}
-                <AccordionTrigger className="text-white text-lg font-semibold py-2">
+                <AccordionTrigger className="text-lg font-semibold">
                   {faq.question}
                 </AccordionTrigger>
-                {/* FAQ Answer */}
-                <AccordionContent className="text-gray-300 pl-4 py-2">
+                <AccordionContent className="text-gray-600">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
@@ -72,5 +65,6 @@ export default function Help() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }
+

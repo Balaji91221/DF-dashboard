@@ -1,7 +1,7 @@
-'use client';
+'use client'
 
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import React from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   ResponsiveContainer,
   BarChart,
@@ -12,8 +12,8 @@ import {
   PieChart,
   Pie,
   Cell,
-} from 'recharts';
-import { useLogs } from '@/components/useLogs';
+} from 'recharts'
+import { useLogs } from '@/hooks/useLogs'
 import {
   Table,
   TableBody,
@@ -21,112 +21,102 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from '@/components/ui/table'
 
-export default function Analytics() {
-  const { logs, authMethodsData } = useLogs();
+export default function AnalyticsPage() {
+  const { logs, authMethodsData } = useLogs()
 
   // Aggregate daily login data
   const dailyLoginData = logs.reduce((acc: { [key: string]: number }, log) => {
-    const date = new Date(log.timestamp).toLocaleDateString();
-    acc[date] = (acc[date] || 0) + 1;
-    return acc;
-  }, {});
+    const date = new Date(log.timestamp).toLocaleDateString()
+    acc[date] = (acc[date] || 0) + 1
+    return acc
+  }, {})
 
   const barChartData = Object.entries(dailyLoginData)
     .map(([date, count]) => ({ date, count }))
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-    .slice(-7);
+    .slice(-7)
 
   // Aggregate country data
   const countryData = logs.reduce((acc: { [key: string]: number }, log) => {
-    acc[log.countryCode] = (acc[log.countryCode] || 0) + 1;
-    return acc;
-  }, {});
+    acc[log.countryCode] = (acc[log.countryCode] || 0) + 1
+    return acc
+  }, {})
 
   const topCountries = Object.entries(countryData)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 5)
-    .map(([country, count]) => ({ country, count }));
+    .map(([country, count]) => ({ country, count }))
 
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8']
 
   return (
-    <div className="max-w-5xl mx-auto p-8 space-y-8">
-      {/* Page Title */}
-      <h1 className="text-4xl font-bold text-white">Analytics Dashboard</h1>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold text-gray-800 mb-6">Analytics Dashboard</h1>
 
-      {/* Daily Logins Bar Chart */}
       <div className="grid gap-8 md:grid-cols-2">
-        <Card className="bg-gray-900/60 p-6 shadow-lg">
+        <Card>
           <CardHeader>
-            <CardTitle className="text-white text-xl">Daily Logins (Last 7 Days)</CardTitle>
+            <CardTitle>Daily Logins (Last 7 Days)</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={barChartData}>
-                <XAxis dataKey="date" stroke="#fff" opacity={0.7} />
-                <YAxis stroke="#fff" opacity={0.7} />
-                <Tooltip
-                  contentStyle={{ backgroundColor: '#1F2937', border: 'none' }}
-                  labelStyle={{ color: '#fff' }}
-                />
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip />
                 <Bar dataKey="count" fill="#8884d8" barSize={40} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
 
-        {/* Authentication Methods Pie Chart */}
-        <Card className="bg-gray-900/60 p-6 shadow-lg">
+        <Card>
           <CardHeader>
-            <CardTitle className="text-white text-xl">Services</CardTitle>
+            <CardTitle>Authentication Methods</CardTitle>
           </CardHeader>
           <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
-  <PieChart>
-    <Pie
-      data={authMethodsData}
-      cx="50%"
-      cy="50%"
-      innerRadius={60}
-      outerRadius={100}
-      fill="#8884d8"
-      dataKey="value"
-    >
-      {authMethodsData.map((entry, index) => (
-        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-      ))}
-    </Pie>
-    <Tooltip
-      contentStyle={{ backgroundColor: '#1F2937', border: 'none' }}
-      labelStyle={{ color: '#fff' }}
-    />
-  </PieChart>
-</ResponsiveContainer>
-
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={authMethodsData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={100}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label
+                >
+                  {authMethodsData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
           </CardContent>
         </Card>
       </div>
 
-      {/* Top 5 Countries Table */}
-      <Card className="bg-gray-900/60 p-6 shadow-lg">
+      <Card className="mt-8">
         <CardHeader>
-          <CardTitle className="text-white text-xl">Top 5 Countries</CardTitle>
+          <CardTitle>Top 5 Countries</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
-              <TableRow className="border-b border-gray-700">
-                <TableHead className="text-white">Country</TableHead>
-                <TableHead className="text-white">Login Count</TableHead>
+              <TableRow>
+                <TableHead>Country</TableHead>
+                <TableHead>Login Count</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {topCountries.map((country, index) => (
-                <TableRow key={index} className="border-b border-gray-700">
-                  <TableCell className="font-medium text-white">{country.country}</TableCell>
-                  <TableCell className="text-gray-400">{country.count}</TableCell>
+                <TableRow key={index}>
+                  <TableCell className="font-medium">{country.country}</TableCell>
+                  <TableCell>{country.count}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -134,5 +124,6 @@ export default function Analytics() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }
+

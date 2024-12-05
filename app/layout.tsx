@@ -1,17 +1,31 @@
-import Sidebar from '@/components/Sidebar'
+// RootLayout.tsx
+'use client'
+
+import { Sidebar } from '@/components/Sidebar'
+import { Header } from '@/components/Header'
+import { Providers } from '@/components/Providers'
 import './globals.css'
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="en">
-      <body className="bg-[#0f172a]">
-        <div className="flex h-screen w-screen overflow-hidden">
-          <Sidebar className="w-1/4 min-w-[250px]" />
-          <main className="w-3/4 overflow-auto p-3">
-            {children}
-          </main>
-        </div>
+    <html lang="en" suppressHydrationWarning>
+      <body suppressHydrationWarning={true}>
+        <Providers>
+          <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
+            <Sidebar />
+            <div className="flex flex-col flex-1 overflow-hidden">
+              <Header />
+              <main className="flex-1 overflow-y-auto bg-gray-100 dark:bg-gray-900 p-6">
+                {children}
+              </main>
+            </div>
+          </div>
+        </Providers>
       </body>
     </html>
-  )
+  );
 }

@@ -1,100 +1,97 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaHome, FaUsers, FaChartLine, FaQuestionCircle, FaBars, FaTimes } from 'react-icons/fa';
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { ChevronLeft, ChevronRight, LayoutDashboard, Users, BarChart2, HelpCircle,  Shield } from 'lucide-react';
 
-interface SidebarProps {
-  className?: string;
+interface NavItem {
+  title: string;
+  icon: React.ElementType;
+  href: string;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ className }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+const navItems: NavItem[] = [
+  { title: 'Dashboard', icon: LayoutDashboard, href: '/' },
+  { title: 'Users', icon: Users, href: '/users' },
+  { title: 'Analytics', icon: BarChart2, href: '/analytics' },
+  { title: 'Help', icon: HelpCircle, href: '/help' },
+];
+
+export function Sidebar() {
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const pathname = usePathname();
 
-  // Handle screen resize to determine if the device is mobile or desktop
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-      if (window.innerWidth >= 768) setIsOpen(true);
-      else setIsOpen(false);
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    return () => window.removeEventListener('resize', handleResize);
+    const savedState = localStorage.getItem('sidebarCollapsed');
+    setIsCollapsed(savedState === 'true');
   }, []);
 
-  // Toggle the sidebar for mobile and desktop
-  const toggleSidebar = useCallback(() => {
-    if (isMobile) setIsOpen((prev) => !prev);
-    else setIsOpen(true);
-  }, [isMobile]);
-
-  const navItems = [
-    { href: '/', icon: FaHome, label: 'Dashboard' },
-    { href: '/users', icon: FaUsers, label: 'Users' },
-    { href: '/analytics', icon: FaChartLine, label: 'Analytics' },
-    { href: '/help', icon: FaQuestionCircle, label: 'Help' },
-  ];
+  const toggleSidebar = () => {
+    const newState = !isCollapsed;
+    setIsCollapsed(newState);
+    localStorage.setItem('sidebarCollapsed', String(newState));
+  };
 
   return (
-    <>
-      <button
-        className="fixed top-4 left-4 z-50 rounded-full p-2 bg-gray-800 text-white transition duration-200 
-                   hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600 md:hidden"
-        onClick={toggleSidebar}
-        aria-label={isOpen ? 'Close menu' : 'Open menu'}
-      >
-        {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-      </button>
-
-      <nav
-        className={`fixed top-0 left-0 h-screen bg-[#0f172a] shadow-xl transition-transform duration-300 
-                    ease-in-out z-40 ${isOpen ? 'translate-x-0' : '-translate-x-full'} 
-                    md:relative md:translate-x-0 md:shadow-none ${className || ''}`}
-      >
-        <div className="p-6">
-          <h1 className="text-3xl font-bold text-[#93c5fd]">MAuthN</h1>
+    <div className={cn(
+      "relative flex flex-col h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out",
+      isCollapsed ? "w-16" : "w-64"
+    )}>
+      <div className="flex items-center justify-between p-4">
+        <div className={cn("flex items-center", isCollapsed ? "justify-center w-full" : "")}>
+          <Shield className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+          {!isCollapsed && <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">MAuthN</span>}
         </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleSidebar}
+          className={cn("absolute right-2 top-4", isCollapsed ? "-right-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full" : "")}
+          aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+        </Button>
+      </div>
 
-        <ul className="space-y-2 px-4">
+      <ScrollArea className="flex-1 px-3">
+        <nav className="flex flex-col gap-1 py-4">
           {navItems.map((item) => (
-            <li key={item.href}>
-              <Link
-                href={item.href}
-                className={`flex items-center rounded-lg p-3 text-sm font-medium transition-all duration-200
-                            ${
-                              pathname === item.href
-                                ? 'bg-gray-800 text-white'
-                                : 'text-gray-400 hover:bg-gray-800 hover:text-white'
-                            }`}
-                onClick={() => isMobile && setIsOpen(false)}
+            <Link key={item.href} href={item.href} passHref>
+              <Button
+                variant="ghost"
+                className={cn(
+                  "w-full justify-start",
+                  pathname === item.href ? "bg-gray-100 dark:bg-gray-700 text-blue-600 dark:text-blue-400" : "text-gray-600 dark:text-gray-300",
+                  isCollapsed ? "px-2" : "px-4"
+                )}
               >
-                <item.icon className="mr-3 h-5 w-5" />
-                <span>{item.label}</span>
-              </Link>
-            </li>
+                <item.icon className={cn("h-5 w-5", isCollapsed ? "mr-0" : "mr-3")} />
+                {!isCollapsed && <span>{item.title}</span>}
+              </Button>
+            </Link>
           ))}
-        </ul>
+        </nav>
+      </ScrollArea>
 
-        <div className="absolute bottom-0 left-0 right-0 p-4 text-center text-sm text-gray-400">
-          &copy; 2024 MAuthN
-        </div>
-      </nav>
-
-      {/* Overlay for mobile devices */}
-      {isOpen && isMobile && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
-          onClick={() => setIsOpen(false)}
-        ></div>
-      )}
-    </>
+      <div className="mt-auto p-4">
+        <nav className="flex flex-col gap-1">
+          {/* <Button variant="ghost" className={cn("w-full justify-start", isCollapsed ? "px-2" : "px-4")}>
+            <Settings className={cn("h-5 w-5", isCollapsed ? "mr-0" : "mr-3")} />
+            {!isCollapsed && <span>Settings</span>}
+          </Button> */}
+          {/* <Button variant="ghost" className={cn("w-full justify-start", isCollapsed ? "px-2" : "px-4")}>
+            <LogOut className={cn("h-5 w-5", isCollapsed ? "mr-0" : "mr-3")} />
+            {!isCollapsed && <span>Logout</span>}
+          </Button> */}
+          <p>Built a website for MAuthN ©.</p>
+          
+        </nav>
+      </div>
+    </div>
   );
-};
+}
 
-export default Sidebar;
