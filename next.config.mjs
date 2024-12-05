@@ -17,6 +17,10 @@ const nextConfig = {
         },
         ];
     },
+    output: 'export', // Enable static export
+    trailingSlash: true,
+    reactStrictMode: true,
 };
+
 
 export default nextConfig;
