@@ -29,6 +29,7 @@ A modern, data-driven dashboard built with **Nextjs**, **Recharts**, and **Tailw
 
 ## 🚀 Setup and Installation
 
+
 ### Prerequisites
 
 Ensure you have the following installed:
